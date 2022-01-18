@@ -3,10 +3,10 @@ module "vpc" {
   source = ".//modules/vpc"
 }
 
-module "ec2-nginx" {
+module "ec2-webserver" {
   source = ".//modules/ec2"
 
-  name                            = "${var.env}-webserver1"
+  name                            = "${var.env}-webserver"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
@@ -21,7 +21,7 @@ module "ec2-phpmyadmin" {
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
-  subnet_id_instance              = module.vpc.private_subnet_ids[0]
+  subnet_id_instance              = module.vpc.private_subnet_ids[1]
   type                            = "phpmyadmin"
 }
 

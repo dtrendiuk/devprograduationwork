@@ -9,18 +9,9 @@ resource "aws_db_instance" "db" {
   vpc_security_group_ids  = [module.vpc.sg_database_id]
   backup_retention_period = var.database_backup_retention_period
   username                = "admin"
-  password                = "admin123"
+  password                = random_password.db_master_pass.result
   publicly_accessible     = false
   skip_final_snapshot     = true
-
-  ## Life cycle policy to avoid any further update in this template ##
-  lifecycle {
-    ignore_changes = [
-      engine_version,
-      password,
-      backup_retention_period
-    ]
-  }
 
   tags = {
     Name = "${var.env}-rds"
@@ -34,4 +25,23 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   tags = {
     Name = "${var.env}-DB-subnet-group"
   }
+}
+
+resource "random_password" "db_master_pass" {
+  length           = 20
+  special          = true
+  min_special      = 5
+  override_special = "!#$%^&*()-_=+[]{}<>:?"
+  keepers = {
+    pass_version = 1
+  }
+}
+
+resource "aws_secretsmanager_secret" "db-pass" {
+  name = "db-pass-dev-pro-test"
+}
+
+resource "aws_secretsmanager_secret_version" "db-pass-val" {
+  secret_id     = aws_secretsmanager_secret.db-pass.id
+  secret_string = random_password.db_master_pass.result
 }

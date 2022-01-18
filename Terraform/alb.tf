@@ -68,7 +68,7 @@ resource "aws_alb_target_group" "dev_pro_tg_2" {
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_1" {
   target_group_arn = aws_alb_target_group.dev_pro_tg_1.arn
-  target_id        = module.ec2-nginx.instance[0]
+  target_id        = module.ec2-webserver.instance[0]
 }
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_2" {

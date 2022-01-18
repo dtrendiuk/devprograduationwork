@@ -1,10 +1,10 @@
 # Output variable definitions
-/*
+
 output "alb_dns_name" {
   description = "ALB DNS"
   value       = aws_alb.dev_pro_alb.dns_name
 }
-*/
+
 output "sg_puplic_id" {
   description = "Public Security Group"
   value       = module.vpc.sg_public_id
@@ -45,16 +45,11 @@ output "nat_gateway_ip" {
   value       = module.vpc.nat_gateway_ip
 }
 
-output "webserver_1_private_ip" {
+output "webserver_private_ip" {
   description = "First Webserver Private IP"
-  value       = module.ec2-nginx.private_ip
+  value       = module.ec2-webserver.private_ip
 }
-/*
-output "webserver_2_private_ip" {
-  description = "Second Webserver Private IP"
-  value       = module.ec2-webserver2.private_ip
-}
-*/
+
 output "phpmyadmin_private_ip" {
   description = "phpMyAdmin server Private IP"
   value       = module.ec2-phpmyadmin.private_ip

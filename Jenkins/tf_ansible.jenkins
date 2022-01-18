@@ -69,7 +69,7 @@ pipeline {
           sudo yum update -y && sudo yum install git -y && sudo pip3 install ansible;
           mkdir /home/ec2-user/ansible;
           git clone https://github.com/dtrendiuk/devprograduationwork.git /home/ec2-user/ansible/;
-          cd /home/ec2-user/ansible/ansible;
+          cd /home/ec2-user/ansible/Ansible;
           ansible-galaxy collection install amazon.aws;
           pip3 install --user boto3;
           ansible-playbook -i inventory_aws_ec2.yml playbook.yml
