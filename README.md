@@ -1,1 +1,2 @@
-# dev.pro graduational home work
+# learning
+dev.pro educational course
