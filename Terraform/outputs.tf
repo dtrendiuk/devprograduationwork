@@ -70,8 +70,3 @@ output "user_data_bastion" {
   value       = data.template_file.user_data_bastion.vars
   sensitive   = true
 }
-
-output "rds_address" {
-  description = "DB instance address"
-  value       = aws_db_instance.db.address
-}

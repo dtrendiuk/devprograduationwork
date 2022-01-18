@@ -25,6 +25,17 @@ module "ec2-phpmyadmin" {
   type                            = "phpmyadmin"
 }
 
+module "ec2-database" {
+  source = ".//modules/ec2"
+
+  name                            = "${var.env}-database"
+  iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
+  key_name                        = aws_key_pair.ansible_key.key_name
+  vpc_security_group_ids_instance = [module.vpc.sg_database_id]
+  subnet_id_instance              = module.vpc.database_subnet_ids[0]
+  type                            = "database"
+}
+
 module "ec2-bastion" {
   source = ".//modules/ec2"
 
