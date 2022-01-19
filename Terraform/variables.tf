@@ -40,11 +40,11 @@ variable "tg_2_protocol" {
   default = "HTTP"
 }
 
-variable "aws_lb_listener_port" {
+variable "aws_alb_listener_port" {
   default = "80"
 }
 
-variable "aws_lb_listener_protocol" {
+variable "aws_alb_listener_protocol" {
   default = "HTTP"
 }
 

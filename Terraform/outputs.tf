@@ -1,8 +1,13 @@
 # Output variable definitions
 
-output "alb_dns_name" {
+output "alb_dns_name_green" {
   description = "ALB DNS"
-  value       = aws_alb.dev_pro_alb.dns_name
+  value       = aws_alb.dev_pro_alb_green.dns_name
+}
+
+output "alb_dns_name_blue" {
+  description = "ALB DNS"
+  value       = aws_alb.dev_pro_alb_blue.dns_name
 }
 
 output "sg_puplic_id" {
@@ -47,12 +52,12 @@ output "nat_gateway_ip" {
 
 output "webserver_private_ip" {
   description = "First Webserver Private IP"
-  value       = module.ec2-webserver.private_ip
+  value       = module.ec2-webserver-green.private_ip
 }
 
 output "phpmyadmin_private_ip" {
   description = "phpMyAdmin server Private IP"
-  value       = module.ec2-phpmyadmin.private_ip
+  value       = module.ec2-phpmyadmin-green.private_ip
 }
 
 output "bastion_ip" {

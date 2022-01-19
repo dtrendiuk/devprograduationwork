@@ -3,26 +3,52 @@ module "vpc" {
   source = ".//modules/vpc"
 }
 
-module "ec2-webserver" {
+module "ec2-webserver-green" {
   source = ".//modules/ec2"
 
-  name                            = "${var.env}-webserver"
+  name                            = "${var.env}-webserver-green"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
   subnet_id_instance              = module.vpc.private_subnet_ids[0]
   type                            = "webserver"
+  color                           = "green"
 }
 
-module "ec2-phpmyadmin" {
+module "ec2-phpmyadmin-green" {
   source = ".//modules/ec2"
 
-  name                            = "${var.env}-phpmyadmin"
+  name                            = "${var.env}-phpmyadmin-green"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
   subnet_id_instance              = module.vpc.private_subnet_ids[1]
   type                            = "phpmyadmin"
+  color                           = "green"
+}
+
+module "ec2-webserver-blue" {
+  source = ".//modules/ec2"
+
+  name                            = "${var.env}-webserver-blue"
+  iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
+  key_name                        = aws_key_pair.ansible_key.key_name
+  vpc_security_group_ids_instance = [module.vpc.sg_private_id]
+  subnet_id_instance              = module.vpc.private_subnet_ids[1]
+  type                            = "webserver"
+  color                           = "blue"
+}
+
+module "ec2-phpmyadmin-blue" {
+  source = ".//modules/ec2"
+
+  name                            = "${var.env}-phpmyadmin-blue"
+  iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
+  key_name                        = aws_key_pair.ansible_key.key_name
+  vpc_security_group_ids_instance = [module.vpc.sg_private_id]
+  subnet_id_instance              = module.vpc.private_subnet_ids[0]
+  type                            = "phpmyadmin"
+  color                           = "blue"
 }
 
 module "ec2-database" {
