@@ -61,7 +61,7 @@ output "phpmyadmin_private_ip" {
 }
 
 output "bastion_ip" {
-  description = "Bation Public IP"
+  description = "Bastion Public IP"
   value       = module.ec2-bastion.public_ip
 }
 

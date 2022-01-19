@@ -57,8 +57,8 @@ module "ec2-database" {
   name                            = "${var.env}-database"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
-  vpc_security_group_ids_instance = [module.vpc.sg_database_id]
-  subnet_id_instance              = module.vpc.database_subnet_ids[0]
+  vpc_security_group_ids_instance = [module.vpc.sg_private_id]
+  subnet_id_instance              = module.vpc.private_subnet_ids[0]
   type                            = "database"
 }
 

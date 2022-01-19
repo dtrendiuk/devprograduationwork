@@ -12,6 +12,8 @@ variable "region" {
   default = "eu-west-1"
 }
 
+
+# ALB variables
 variable "alb_name" {
   default = "dev-pro-alb"
 }
@@ -48,6 +50,7 @@ variable "aws_alb_listener_protocol" {
   default = "HTTP"
 }
 
+# CLoudflare variables
 variable "cloudflare_email" {
   default = "dmytro.trendiuk@dev.pro"
 }
@@ -58,4 +61,15 @@ variable "domain" {
 
 variable "cloudflare_zone_id" {
   default = "34ecc35d44b40c021b5909560781d6a6"
+}
+
+# Green-Blue deployment variables
+variable "enable_blue_deployment_cloudflare" {
+  description = "If set to true, enable blue_deployment"
+  type        = bool
+}
+
+variable "enable_green_deployment_cloudflare" {
+  description = "If set to true, enable green_deployment"
+  type        = bool
 }
