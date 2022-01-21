@@ -20,3 +20,13 @@
   notify:
     - Restart nginx
     - Restart php-fpm
+
+- name: Configure phpmyadmin config file
+  template:
+    src: phpmyadmin.conf.j2
+    dest: /usr/share/nginx/html/phpmyadmin/config.inc.php
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart nginx

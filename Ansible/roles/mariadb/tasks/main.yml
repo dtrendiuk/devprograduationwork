@@ -1,14 +1,54 @@
 ---
-# tasks file for phpmyadmin
+# tasks file for mariadb
 - name: Install mariadb
   yum:
     name:
       - mariadb
       - mariadb-server
+      - MySQL-python
     state: latest
 
-- name: Start mariadb
+- name: start mariadb
   service:
     name: mariadb
     enabled: true
     state: started
+
+- name: change root password
+  mysql_user:
+    name: root
+    password: '{{ db_root_password }}'
+    host_all: yes
+  notify: Restart mariadb
+
+- name: apply /root/.my.cnf
+  template:
+    src: templates/my.cnf.j2
+    dest: /root/.my.cnf
+    mode: 0600
+    owner: root
+    group: root
+  notify: Restart mariadb
+
+- name: remove anonymous users
+  mysql_user:
+    name: ''
+    host_all: yes
+  notify: Restart mariadb
+
+- name: remove test database
+  mysql_db:
+    name: test
+    state: absent
+  notify: Restart mariadb
+
+- name: Create MariaDB User
+  mysql_user:
+    name: admin
+    password: "{{ mysql_user_password }}"
+    priv: '*.*:ALL'
+    host: '%'
+    state: present
+
+  notify:
+    - Restart mariadb

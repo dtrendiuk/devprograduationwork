@@ -65,6 +65,7 @@ pipeline {
         withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-1']) {
         dir ("Terraform") {
         sh '''
+          scp -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ~/secrets/vault_pass.txt ec2-user@$(terraform output -json bastion_ip | jq -r):/home/ec2-user
           ssh -T -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ec2-user@$(terraform output -json bastion_ip | jq -r) "
           sudo yum update -y && sudo yum install git -y && sudo pip3 install ansible;
           mkdir /home/ec2-user/ansible;
@@ -72,7 +73,9 @@ pipeline {
           cd /home/ec2-user/ansible/Ansible;
           ansible-galaxy collection install amazon.aws;
           pip3 install --user boto3;
-          ansible-playbook -i inventory_aws_ec2.yml playbook.yml
+          /home/ec2-user/ansible/Ansible/script.sh;
+          rm -r /home/ec2-user/ansible;
+          rm /home/ec2-user/vault_pass.txt
           "
         '''
       }
