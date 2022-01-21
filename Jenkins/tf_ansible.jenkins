@@ -24,7 +24,7 @@ pipeline {
         sh '''
           export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
           terraform init -no-color
-          terraform plan -var="enable_blue_deployment_cloudflare=false" -var="enable_green_deployment_cloudflare=true" -no-color
+          terraform plan -no-color
         '''
       }
         }
@@ -45,7 +45,7 @@ pipeline {
         dir ("Terraform") {
         sh '''
           export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
-          terraform apply -var="enable_blue_deployment_cloudflare=false" -var="enable_green_deployment_cloudflare=true" -auto-approve -no-color
+          terraform apply -auto-approve -no-color
         '''
       }
         }

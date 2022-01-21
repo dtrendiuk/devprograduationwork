@@ -54,14 +54,18 @@ resource "aws_security_group" "dev_pro_sg_database" {
   name   = "Security Group for Database Subnets"
   vpc_id = aws_vpc.dev_pro_vpc.id
 
-  dynamic "ingress" {
-    for_each = ["3306", "22"]
-    content {
-      from_port       = ingress.value
-      to_port         = ingress.value
-      protocol        = "tcp"
-      security_groups = [aws_security_group.dev_pro_sg_private.id]
-    }
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.dev_pro_sg_private.id]
+  }
+
+  ingress {
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.dev_pro_sg_public.id]
   }
 
   egress {

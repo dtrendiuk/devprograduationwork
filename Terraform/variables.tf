@@ -67,9 +67,11 @@ variable "cloudflare_zone_id" {
 variable "enable_blue_deployment_cloudflare" {
   description = "If set to true, enable blue_deployment"
   type        = bool
+  default     = false
 }
 
 variable "enable_green_deployment_cloudflare" {
   description = "If set to true, enable green_deployment"
   type        = bool
+  default     = true
 }

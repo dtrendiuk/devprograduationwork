@@ -50,14 +50,29 @@ output "nat_gateway_ip" {
   value       = module.vpc.nat_gateway_ip
 }
 
-output "webserver_private_ip" {
-  description = "First Webserver Private IP"
+output "webserver_green_private_ip" {
+  description = "Green Webserver Private IP"
   value       = module.ec2-webserver-green.private_ip
 }
 
-output "phpmyadmin_private_ip" {
-  description = "phpMyAdmin server Private IP"
+output "phpmyadmin_greeen_private_ip" {
+  description = "Green phpMyAdmin server Private IP"
   value       = module.ec2-phpmyadmin-green.private_ip
+}
+
+output "webserver_blue_private_ip" {
+  description = "Blue Webserver Private IP"
+  value       = module.ec2-webserver-blue.private_ip
+}
+
+output "phpmyadmin_blue_private_ip" {
+  description = "Blue phpMyAdmin server Private IP"
+  value       = module.ec2-phpmyadmin-blue.private_ip
+}
+
+output "database_private_ip" {
+  description = "Database server Private IP"
+  value       = module.ec2-database.private_ip
 }
 
 output "bastion_ip" {

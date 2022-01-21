@@ -99,6 +99,10 @@ resource "aws_route_table" "dev_pro_private_subnets_rt" {
 
 resource "aws_route_table" "dev_pro_database_subnets_rt" {
   vpc_id = aws_vpc.dev_pro_vpc.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.dev_pro_nat_gw.id
+  }
 
   tags = {
     Name = "${var.env}-rt-database-subnets"
