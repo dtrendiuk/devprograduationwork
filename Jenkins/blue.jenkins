@@ -1,0 +1,56 @@
+#!groovy
+// Run TF and Ansible
+
+properties([disableConcurrentBuilds()])
+
+pipeline {
+  agent any
+
+  options {
+      buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+      timestamps()
+  }
+
+  environment {
+    CLOUDFLARE_TOKEN = credentials('cloudflare')
+  }
+
+  stages {
+
+    stage('TF Init&Plan') {
+      steps {
+        withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-1']) {
+        dir ("Terraform") {
+        sh '''
+          export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+          terraform init -var="enable_blue_deployment_cloudflare=true" -var="enable_green_deployment_cloudflare=false" -no-color
+          terraform plan -var="enable_blue_deployment_cloudflare=true" -var="enable_green_deployment_cloudflare=false" -no-color
+        '''
+      }
+        }
+      }
+    }
+
+    stage('Apply DNS zone switch to blue-deployment') {
+        steps {
+          script {
+            def userInput = input(id: 'confirm', message: 'Apply DNS zone switch to blue-deployment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply DNS zone switch to blue-deployment', name: 'confirm'] ])
+          }
+        }
+      }
+
+    stage('TF Apply DNS zone switch to blue-deployment') {
+        steps {
+          withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-1']) {
+          dir ("Terraform") {
+          sh '''
+            export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+            terraform apply -var="enable_blue_deployment_cloudflare=true" -var="enable_green_deployment_cloudflare=false" -auto-approve -no-color
+          '''
+  }
+    }
+ }
+}
+
+  }
+}

@@ -66,43 +66,16 @@ pipeline {
         dir ("Terraform") {
         sh '''
           scp -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ~/secrets/vault_pass.txt ec2-user@$(terraform output -json bastion_ip | jq -r):/home/ec2-user
-          ssh -T -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ec2-user@$(terraform output -json bastion_ip | jq -r) "
+          ssh -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ec2-user@$(terraform output -json bastion_ip | jq -r) "
           sudo yum update -y && sudo yum install git -y && sudo pip3 install ansible;
-          mkdir /home/ec2-user/ansible;
-          git clone https://github.com/dtrendiuk/devprograduationwork.git /home/ec2-user/ansible/;
-          cd /home/ec2-user/ansible/Ansible;
-          ansible-galaxy collection install amazon.aws;
-          pip3 install --user boto3;
+          mkdir /home/ec2-user/ansible && git clone https://github.com/dtrendiuk/devprograduationwork.git /home/ec2-user/ansible/;
           /home/ec2-user/ansible/Ansible/script.sh;
-          rm -r /home/ec2-user/ansible;
-          rm /home/ec2-user/vault_pass.txt
+          rm -r /home/ec2-user/ansible && rm /home/ec2-user/vault_pass.txt
           "
         '''
       }
         }
       }
     }
-
-    stage('Apply DNS zone switch to blue-deployment') {
-        steps {
-          script {
-            def userInput = input(id: 'confirm', message: 'Apply DNS zone switch to blue-deployment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply DNS zone switch to blue-deployment', name: 'confirm'] ])
-          }
-        }
-      }
-
-    stage('TF Apply DNS zone switch to blue-deployment') {
-        steps {
-          withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-1']) {
-          dir ("Terraform") {
-          sh '''
-            export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
-            terraform apply -var="enable_blue_deployment_cloudflare=true" -var="enable_green_deployment_cloudflare=false" -auto-approve -no-color
-          '''
-  }
-    }
- }
-}
-
   }
 }

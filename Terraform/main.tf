@@ -60,6 +60,13 @@ module "ec2-database" {
   vpc_security_group_ids_instance = [module.vpc.sg_database_id]
   subnet_id_instance              = module.vpc.database_subnet_ids[0]
   type                            = "database"
+
+  depends_on = [
+    module.ec2-webserver-blue.instance,
+    module.ec2-webserver-green.instance,
+    module.ec2-phpmyadmin-blue.instance,
+    module.ec2-phpmyadmin-green.instance
+  ]
 }
 
 module "ec2-bastion" {
@@ -72,6 +79,11 @@ module "ec2-bastion" {
   subnet_id_instance              = module.vpc.public_subnet_ids[0]
   user_data                       = data.template_file.user_data_bastion.rendered
   env                             = "bastion"
+
+  depends_on = [
+    module.ec2-database.instance
+  ]
+
 }
 
 # IAM roles
