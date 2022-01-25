@@ -80,13 +80,12 @@ output "bastion_ip" {
   value       = module.ec2-bastion.public_ip
 }
 
-output "user_data_rendered_bastion" {
-  description = "Check variable in user_data script"
-  value       = data.template_file.user_data_bastion.rendered
+output "database_bucket_arn" {
+  description = "Database Bucket ARN"
+  value       = aws_s3_bucket.database_backup.arn
 }
 
-output "user_data_bastion" {
-  description = "Use variable in user_data script"
-  value       = data.template_file.user_data_bastion.vars
-  sensitive   = true
+output "database_bucket_id" {
+  description = "Database Bucket ID"
+  value       = aws_s3_bucket.database_backup.id
 }

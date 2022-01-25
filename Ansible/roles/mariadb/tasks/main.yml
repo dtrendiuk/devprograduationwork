@@ -8,20 +8,20 @@
       - MySQL-python
     state: latest
 
-- name: start mariadb
+- name: Start mariadb
   service:
     name: mariadb
     enabled: true
     state: started
 
-- name: change root password
+- name: Change root password
   mysql_user:
     name: root
     password: '{{ db_root_password }}'
     host_all: yes
   notify: Restart mariadb
 
-- name: apply /root/.my.cnf
+- name: Apply /root/.my.cnf
   template:
     src: templates/my.cnf.j2
     dest: /root/.my.cnf
@@ -30,25 +30,31 @@
     group: root
   notify: Restart mariadb
 
-- name: remove anonymous users
+- name: Remove anonymous users
   mysql_user:
     name: ''
     host_all: yes
   notify: Restart mariadb
 
-- name: remove test database
+- name: Remove test database
   mysql_db:
     name: test
     state: absent
   notify: Restart mariadb
 
-- name: Create MariaDB User
+- name: Create MariaDB user
   mysql_user:
     name: admin
     password: "{{ mysql_user_password }}"
     priv: '*.*:ALL'
     host: '%'
     state: present
-
   notify:
     - Restart mariadb
+
+- name: Create daily DB backup
+  ansible.builtin.cron:
+    name: "Make backup and move it to AWS bucket"
+    minute: "0"
+    hour: "0"
+    job: "mysqldump -uroot -p{{ db_root_password }} -A > all-databases.sql && aws s3 cp all-databases.sql s3://dev-pro-test-database-backup > /dev/null"

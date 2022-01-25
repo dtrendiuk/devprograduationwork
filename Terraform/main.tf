@@ -89,12 +89,12 @@ module "ec2-bastion" {
 # IAM roles
 ## webservers and phpmyadmin
 resource "aws_iam_role" "dev_pro_role" {
-  name               = "SSM-CloudWatch-Full-S3-ReadOnly"
+  name               = "SSM-CloudWatch-S3-Full"
   assume_role_policy = data.aws_iam_policy_document.ec2_instance_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
     "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   ]
 }
 
@@ -115,4 +115,19 @@ resource "aws_iam_role" "bastion_role" {
 resource "aws_iam_instance_profile" "bastion_instance_profile" {
   name = "${var.env}-bastion_instance_profile"
   role = aws_iam_role.bastion_role.name
+}
+
+# Bucket for DB backup
+resource "aws_s3_bucket" "database_backup" {
+  bucket = "dev-pro-test-database-backup"
+
+  lifecycle {
+    prevent_destroy = false
+  }
+  force_destroy = true
+
+  tags = {
+    Name        = "Database Backup"
+    Environment = "${var.env}"
+  }
 }
