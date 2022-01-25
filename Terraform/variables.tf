@@ -1,66 +1,81 @@
 # Input variable definitions
 
 variable "key_name" {
-  default = "ansible"
+  description = "SSH key name"
+  default     = "ansible"
 }
 
 variable "env" {
-  default = "dev-pro-test"
+  description = "Environment name"
+  default     = "dev-pro-test"
 }
 
 variable "region" {
-  default = "eu-west-1"
+  description = "Region name"
+  default     = "eu-west-1"
 }
 
 
 # ALB variables
 variable "alb_name" {
-  default = "dev-pro-alb"
+  description = "ALB name"
+  default     = "dev-pro-alb"
 }
 
 variable "tg_1_name" {
-  default = "dev-pro-tg-webserver"
+  description = "First Target group name"
+  default     = "dev-pro-tg-webserver"
 }
 
 variable "tg_1_port" {
-  default = "80"
+  description = "First Target group port"
+  default     = "80"
 }
 
 variable "tg_1_protocol" {
-  default = "HTTP"
+  description = "First Target group protocol"
+  default     = "HTTP"
 }
 
 variable "tg_2_name" {
-  default = "dev-pro-tg-phpmyadmin"
+  description = "Second Target group name"
+  default     = "dev-pro-tg-phpmyadmin"
 }
 
 variable "tg_2_port" {
-  default = "80"
+  description = "Second Target group port"
+  default     = "80"
 }
 
 variable "tg_2_protocol" {
-  default = "HTTP"
+  description = "Second Target group protocol"
+  default     = "HTTP"
 }
 
 variable "aws_alb_listener_port" {
-  default = "80"
+  description = "ALB listener port"
+  default     = "80"
 }
 
 variable "aws_alb_listener_protocol" {
-  default = "HTTP"
+  description = "ALB listener protocol"
+  default     = "HTTP"
 }
 
 # CLoudflare variables
 variable "cloudflare_email" {
-  default = "dmytro.trendiuk@dev.pro"
+  description = "Contact email address"
+  default     = "dmytro.trendiuk@dev.pro"
 }
 
 variable "domain" {
-  default = "trendv2021.pp.ua"
+  description = "Domain name"
+  default     = "trendv2021.pp.ua"
 }
 
 variable "cloudflare_zone_id" {
-  default = "34ecc35d44b40c021b5909560781d6a6"
+  description = "Cloudflare Zone ID"
+  default     = "34ecc35d44b40c021b5909560781d6a6"
 }
 
 # Green-Blue deployment variables
