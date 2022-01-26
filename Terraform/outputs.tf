@@ -1,12 +1,12 @@
 # Output variable definitions
 
 output "alb_dns_name_green" {
-  description = "ALB DNS"
+  description = "ALB DNS Green"
   value       = aws_alb.dev_pro_alb_green.dns_name
 }
 
 output "alb_dns_name_blue" {
-  description = "ALB DNS"
+  description = "ALB DNS Blue"
   value       = aws_alb.dev_pro_alb_blue.dns_name
 }
 
