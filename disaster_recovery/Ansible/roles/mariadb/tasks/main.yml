@@ -1,0 +1,56 @@
+---
+# tasks file for mariadb
+- name: Install mariadb
+  yum:
+    name:
+      - mariadb
+      - mariadb-server
+      - MySQL-python
+    state: latest
+
+- name: Start mariadb
+  service:
+    name: mariadb
+    enabled: true
+    state: started
+
+- name: Change root password
+  mysql_user:
+    name: root
+    password: '{{ db_root_password }}'
+    host_all: yes
+  notify: Restart mariadb
+
+- name: Apply /root/.my.cnf
+  template:
+    src: templates/my.cnf.j2
+    dest: /root/.my.cnf
+    mode: 0600
+    owner: root
+    group: root
+  notify: Restart mariadb
+
+- name: Remove anonymous users
+  mysql_user:
+    name: ''
+    host_all: yes
+  notify: Restart mariadb
+
+- name: Remove test database
+  mysql_db:
+    name: test
+    state: absent
+  notify: Restart mariadb
+
+- name: Create MariaDB user
+  mysql_user:
+    name: admin
+    password: "{{ mysql_user_password }}"
+    priv: '*.*:ALL'
+    host: '%'
+    state: present
+  notify:
+    - Restart mariadb
+
+- name: Upload and restore the last DB backup
+  ansible.builtin.shell: s3 cp s3://dev-pro-test-database-backup/all-databases.sql /home/ec2-user/. && mysql -uroot -p{{ db_root_password }} < /home/ec2-user/all-databases.sql

@@ -1,0 +1,32 @@
+---
+# tasks file for phpmyadmin
+- name: Install mariadb-client
+  yum:
+    name:
+      - mariadb
+    state: latest
+
+- name: Create phpmyadmin directory
+  file:
+    path: /usr/share/nginx/html/phpmyadmin/
+    state: directory
+
+- name: Setup phpmyadmin
+  ansible.builtin.unarchive:
+    src: https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+    dest: "{{ destin_folder }}"
+    extra_opts: [--strip-components=1]
+    remote_src: yes
+  notify:
+    - Restart nginx
+    - Restart php-fpm
+
+- name: Configure phpmyadmin config file
+  template:
+    src: phpmyadmin.conf.j2
+    dest: /usr/share/nginx/html/phpmyadmin/config.inc.php
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart nginx

@@ -1,0 +1,4 @@
+database_group: _database
+roles:
+  - awslogs
+  - mariadb

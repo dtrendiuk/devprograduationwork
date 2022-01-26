@@ -1,0 +1,81 @@
+#!groovy
+// Run TF and Ansible
+
+properties([disableConcurrentBuilds()])
+
+pipeline {
+  agent any
+
+  options {
+      buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+      timestamps()
+  }
+
+  environment {
+    CLOUDFLARE_TOKEN = credentials('cloudflare')
+  }
+
+  stages {
+
+    stage('TF Init&Plan') {
+      steps {
+        withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
+        dir ("disaster_recovery/Terraform") {
+        sh '''
+          export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+          terraform init -var="region=eu-west-2" -no-color
+          terraform plan -var="region=eu-west-2" -no-color
+        '''
+      }
+        }
+      }
+    }
+
+    stage('TF Apply Approval') {
+      steps {
+        script {
+          def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
+         }
+       }
+     }
+
+    stage('TF Apply') {
+      steps {
+        withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
+        dir ("disaster_recovery/Terraform") {
+        sh '''
+          export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+          terraform apply -var="region=eu-west-2" -auto-approve -no-color
+        '''
+      }
+        }
+     }
+    }
+
+    stage('Ansible Approval') {
+        steps {
+          script {
+           def userInput = input(id: 'confirm', message: 'Apply Ansible-playbook?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply ansible-playbook', name: 'confirm'] ])
+          }
+        }
+      }
+
+    stage('Ansible') {
+      steps {
+        withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
+        dir ("disaster_recovery/Terraform") {
+        sh '''
+          scp -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ~/secrets/vault_pass.txt ec2-user@$(terraform output -json bastion_ip | jq -r):/home/ec2-user
+          ssh -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ec2-user@$(terraform output -json bastion_ip | jq -r) "
+          sudo yum update -y && sudo yum install git -y && sudo pip3 install ansible;
+          mkdir /home/ec2-user/ansible && git clone https://github.com/dtrendiuk/devprograduationwork.git /home/ec2-user/ansible/;
+          /home/ec2-user/ansible/disaster_recovery/Ansible/script.sh;
+          rm -r /home/ec2-user/ansible && rm /home/ec2-user/vault_pass.txt
+          "
+        '''
+      }
+        }
+      }
+    }
+  }
+}
