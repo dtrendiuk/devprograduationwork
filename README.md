@@ -65,7 +65,9 @@ and place the outputs to: `Ansible/roles/mariadb/vars/main.yml` under `mysql_use
 
 6. Add CLOUDFLARE_API_KEY ID through Manage Jenkins >> Manage Credentials >> Global credentials (unrestricted) >> Add Credentials >> Secret Text with ID `cloudflare`. Put your cloudflare_zone_id to `Terraform/variables.tf` (you can get it by means of the [instruction](https://developers.cloudflare.com/workers/get-started/guide#optional-configure-for-deploying-to-a-registered-domain)) and specify your domain name at `Terraform/variables.tf` as well.
 
-7. Run Jenkins Green Pipeline. Pass all the stages - they will require for your confirmation. The infrastructure will be deployed by default in AWS `eu-west-1` region. Make sure your domain name works properly (`domain.name/index.html`) and log into phpmyadmin panel through `domain.name/phpmyadmin/`.
+7. Create new bucket in AWS S3 and put its name, key and region at `Terraform/backend.tf`. Full instructions on this subject can be found at the official [AWS website](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html).
+
+8. Run Jenkins Green Pipeline. Pass all the stages - they will require for your confirmation. The infrastructure will be deployed by default in AWS `eu-west-1` region. Make sure your domain name works properly (`domain.name/index.html`) and log into phpmyadmin panel through `domain.name/phpmyadmin/`.
 
 ### Blue stack
 

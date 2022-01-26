@@ -1,4 +1,4 @@
-phpmyadmin_group: _database
+database_group: _database
 roles:
   - awslogs
   - mariadb
