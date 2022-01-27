@@ -15,6 +15,9 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "deployment" {
+  default = ""
+}
 
 # ALB variables
 variable "alb_name" {

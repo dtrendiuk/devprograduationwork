@@ -15,6 +15,9 @@ variable "region" {
   default     = "eu-west-2"
 }
 
+variable "deployment" {
+  default = "disaster-recovery"
+}
 
 # ALB variables
 variable "alb_name" {

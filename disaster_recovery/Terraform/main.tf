@@ -89,7 +89,7 @@ module "ec2-bastion" {
 # IAM roles
 ## webservers and phpmyadmin
 resource "aws_iam_role" "dev_pro_role" {
-  name               = "SSM-CloudWatch-S3-Full"
+  name               = "SSM-CloudWatch-S3-Full-${var.deployment}"
   assume_role_policy = data.aws_iam_policy_document.ec2_instance_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
@@ -99,13 +99,13 @@ resource "aws_iam_role" "dev_pro_role" {
 }
 
 resource "aws_iam_instance_profile" "dev_pro_instance_profile" {
-  name = "${var.env}-instance_profile"
+  name = "${var.env}-instance_profile-${var.deployment}"
   role = aws_iam_role.dev_pro_role.name
 }
 
 ## bastion server
 resource "aws_iam_role" "bastion_role" {
-  name               = "EC2-Full"
+  name               = "EC2-Full-${var.deployment}"
   assume_role_policy = data.aws_iam_policy_document.ec2_instance_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
@@ -113,21 +113,6 @@ resource "aws_iam_role" "bastion_role" {
 }
 
 resource "aws_iam_instance_profile" "bastion_instance_profile" {
-  name = "${var.env}-bastion_instance_profile"
+  name = "${var.env}-bastion_instance_profile-${var.deployment}"
   role = aws_iam_role.bastion_role.name
-}
-
-# Bucket for DB backup
-resource "aws_s3_bucket" "database_backup" {
-  bucket = "dev-pro-test-database-backup"
-
-  lifecycle {
-    prevent_destroy = false
-  }
-  force_destroy = true
-
-  tags = {
-    Name        = "Database Backup"
-    Environment = "${var.env}"
-  }
 }

@@ -89,7 +89,7 @@ module "ec2-bastion" {
 # IAM roles
 ## webservers and phpmyadmin
 resource "aws_iam_role" "dev_pro_role" {
-  name               = "SSM-CloudWatch-S3-Full"
+  name               = "SSM-CloudWatch-S3-Full-${var.deployment}"
   assume_role_policy = data.aws_iam_policy_document.ec2_instance_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
@@ -105,7 +105,7 @@ resource "aws_iam_instance_profile" "dev_pro_instance_profile" {
 
 ## bastion server
 resource "aws_iam_role" "bastion_role" {
-  name               = "EC2-Full"
+  name               = "EC2-Full-${var.deployment}"
   assume_role_policy = data.aws_iam_policy_document.ec2_instance_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess"

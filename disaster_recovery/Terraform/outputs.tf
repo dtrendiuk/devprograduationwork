@@ -79,13 +79,3 @@ output "bastion_ip" {
   description = "Bastion Public IP"
   value       = module.ec2-bastion.public_ip
 }
-
-output "database_bucket_arn" {
-  description = "Database Bucket ARN"
-  value       = aws_s3_bucket.database_backup.arn
-}
-
-output "database_bucket_id" {
-  description = "Database Bucket ID"
-  value       = aws_s3_bucket.database_backup.id
-}

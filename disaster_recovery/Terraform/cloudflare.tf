@@ -1,5 +1,5 @@
 # cloudflare green infrastructure
-resource "cloudflare_record" "cname-green" {
+resource "cloudflare_record" "cname-green-dr" {
   count = var.enable_green_deployment_cloudflare ? 1 : 0
 
   zone_id = var.cloudflare_zone_id
@@ -10,7 +10,7 @@ resource "cloudflare_record" "cname-green" {
 }
 
 # cloudflare blue infrastructure
-resource "cloudflare_record" "cname-blue" {
+resource "cloudflare_record" "cname-blue-dr" {
   count = var.enable_blue_deployment_cloudflare ? 1 : 0
 
   zone_id = var.cloudflare_zone_id

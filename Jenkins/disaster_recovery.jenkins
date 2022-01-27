@@ -17,21 +17,35 @@ pipeline {
 
   stages {
 
-    stage('TF Init&Plan') {
+    stage('TF Apply DNS zone remove from default mode') {
+        steps {
+          withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-1']) {
+          dir ("Terraform") {
+          sh '''
+            export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+            terraform init -var="enable_blue_deployment_cloudflare=false" -var="enable_green_deployment_cloudflare=false" -no-color
+            terraform apply -var="enable_blue_deployment_cloudflare=false" -var="enable_green_deployment_cloudflare=false" -auto-approve -no-color
+          '''
+  }
+    }
+ }
+}
+
+    stage('Disaster Recovery TF Init&Plan') {
       steps {
         withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
         dir ("disaster_recovery/Terraform") {
         sh '''
           export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
-          terraform init -var="region=eu-west-2" -no-color
-          terraform plan -var="region=eu-west-2" -no-color
+          terraform init -no-color
+          terraform plan -no-color
         '''
       }
         }
       }
     }
 
-    stage('TF Apply Approval') {
+    stage('Disaster Recovery TF Apply Approval') {
       steps {
         script {
           def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
@@ -39,20 +53,20 @@ pipeline {
        }
      }
 
-    stage('TF Apply') {
+    stage('Disaster Recovery TF Apply') {
       steps {
         withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
         dir ("disaster_recovery/Terraform") {
         sh '''
           export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
-          terraform apply -var="region=eu-west-2" -auto-approve -no-color
+          terraform apply -auto-approve -no-color
         '''
       }
         }
      }
     }
 
-    stage('Ansible Approval') {
+    stage('Disaster Recovery Ansible Approval') {
         steps {
           script {
            def userInput = input(id: 'confirm', message: 'Apply Ansible-playbook?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply ansible-playbook', name: 'confirm'] ])
@@ -60,7 +74,7 @@ pipeline {
         }
       }
 
-    stage('Ansible') {
+    stage('Disaster Recovery Ansible') {
       steps {
         withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
         dir ("disaster_recovery/Terraform") {
@@ -77,5 +91,26 @@ pipeline {
         }
       }
     }
+
+    stage('Apply DNS zone switch to blue-deployment in disaster recovery mode') {
+        steps {
+          script {
+            def userInput = input(id: 'confirm', message: 'Apply DNS zone switch to blue-deployment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply DNS zone switch to blue-deployment', name: 'confirm'] ])
+          }
+        }
+      }
+
+    stage('TF Apply DNS zone switch to blue-deployment in disaster recovery mode') {
+        steps {
+          withAWS([credentials: 'jenkins-aws-credentials', region: 'eu-west-2']) {
+          dir ("disaster_recovery/Terraform") {
+          sh '''
+            export CLOUDFLARE_API_KEY=$CLOUDFLARE_TOKEN
+            terraform apply -var="enable_blue_deployment_cloudflare=true" -var="enable_green_deployment_cloudflare=false" -auto-approve -no-color
+          '''
+  }
+    }
+ }
+}
   }
 }
