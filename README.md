@@ -73,4 +73,4 @@ and place the outputs to: `Ansible/roles/mariadb/vars/main.yml` under `mysql_use
 
 To switch your infrastructure to the Blue stack you need to run Jenkins Blue Pipeline. Make sure your domain name works properly (`domain.name/index.html`) and log into phpmyadmin panel through `domain.name/phpmyadmin/`.
 
-If you need to roll your changes back to the Green stack, you need to run Jenkins Green Pipeline again (in accordance with p.7 of the list above).
+If you need to roll your changes back to the Green stack, you need to run Jenkins Green Pipeline again (in accordance with p.8 of the list above).

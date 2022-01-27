@@ -49,9 +49,8 @@
 | [aws_key_pair.dev_pro_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_lb_listener_rule.dev_pro_listener_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.dev_pro_listener_rule_blue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
-| [aws_s3_bucket.database_backup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [cloudflare_record.cname-blue](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
-| [cloudflare_record.cname-green](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_record.cname-blue-dr](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_record.cname-green-dr](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [tls_private_key.ansible](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [aws_iam_policy_document.ec2_instance_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
@@ -66,12 +65,13 @@
 | <a name="input_aws_alb_listener_protocol"></a> [aws\_alb\_listener\_protocol](#input\_aws\_alb\_listener\_protocol) | ALB listener protocol | `string` | `"HTTP"` | no |
 | <a name="input_cloudflare_email"></a> [cloudflare\_email](#input\_cloudflare\_email) | Contact email address | `string` | `"dmytro.trendiuk@dev.pro"` | no |
 | <a name="input_cloudflare_zone_id"></a> [cloudflare\_zone\_id](#input\_cloudflare\_zone\_id) | Cloudflare Zone ID | `string` | `"34ecc35d44b40c021b5909560781d6a6"` | no |
+| <a name="input_deployment"></a> [deployment](#input\_deployment) | Type of deployment | `string` | `"disaster-recovery"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | Domain name | `string` | `"trendv2021.pp.ua"` | no |
 | <a name="input_enable_blue_deployment_cloudflare"></a> [enable\_blue\_deployment\_cloudflare](#input\_enable\_blue\_deployment\_cloudflare) | If set to true, enable blue\_deployment | `bool` | `false` | no |
 | <a name="input_enable_green_deployment_cloudflare"></a> [enable\_green\_deployment\_cloudflare](#input\_enable\_green\_deployment\_cloudflare) | If set to true, enable green\_deployment | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | `"dev-pro-test"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | SSH key name | `string` | `"ansible"` | no |
-| <a name="input_region"></a> [region](#input\_region) | Region name | `string` | `"eu-west-1"` | no |
+| <a name="input_region"></a> [region](#input\_region) | Region name | `string` | `"eu-west-2"` | no |
 | <a name="input_tg_1_name"></a> [tg\_1\_name](#input\_tg\_1\_name) | First Target group name | `string` | `"dev-pro-tg-webserver"` | no |
 | <a name="input_tg_1_port"></a> [tg\_1\_port](#input\_tg\_1\_port) | First Target group port | `string` | `"80"` | no |
 | <a name="input_tg_1_protocol"></a> [tg\_1\_protocol](#input\_tg\_1\_protocol) | First Target group protocol | `string` | `"HTTP"` | no |
@@ -86,8 +86,6 @@
 | <a name="output_alb_dns_name_blue"></a> [alb\_dns\_name\_blue](#output\_alb\_dns\_name\_blue) | ALB DNS Blue |
 | <a name="output_alb_dns_name_green"></a> [alb\_dns\_name\_green](#output\_alb\_dns\_name\_green) | ALB DNS Green |
 | <a name="output_bastion_ip"></a> [bastion\_ip](#output\_bastion\_ip) | Bastion Public IP |
-| <a name="output_database_bucket_arn"></a> [database\_bucket\_arn](#output\_database\_bucket\_arn) | Database Bucket ARN |
-| <a name="output_database_bucket_id"></a> [database\_bucket\_id](#output\_database\_bucket\_id) | Database Bucket ID |
 | <a name="output_database_private_ip"></a> [database\_private\_ip](#output\_database\_private\_ip) | Database server Private IP |
 | <a name="output_database_subnet_ids"></a> [database\_subnet\_ids](#output\_database\_subnet\_ids) | Database Subnet IDs |
 | <a name="output_nat_gateway_ip"></a> [nat\_gateway\_ip](#output\_nat\_gateway\_ip) | List of Elastic IPs created for AWS NAT Gateway |

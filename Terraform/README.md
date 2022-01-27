@@ -66,6 +66,7 @@
 | <a name="input_aws_alb_listener_protocol"></a> [aws\_alb\_listener\_protocol](#input\_aws\_alb\_listener\_protocol) | ALB listener protocol | `string` | `"HTTP"` | no |
 | <a name="input_cloudflare_email"></a> [cloudflare\_email](#input\_cloudflare\_email) | Contact email address | `string` | `"dmytro.trendiuk@dev.pro"` | no |
 | <a name="input_cloudflare_zone_id"></a> [cloudflare\_zone\_id](#input\_cloudflare\_zone\_id) | Cloudflare Zone ID | `string` | `"34ecc35d44b40c021b5909560781d6a6"` | no |
+| <a name="input_deployment"></a> [deployment](#input\_deployment) | Type of deployment | `string` | `"default"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | Domain name | `string` | `"trendv2021.pp.ua"` | no |
 | <a name="input_enable_blue_deployment_cloudflare"></a> [enable\_blue\_deployment\_cloudflare](#input\_enable\_blue\_deployment\_cloudflare) | If set to true, enable blue\_deployment | `bool` | `false` | no |
 | <a name="input_enable_green_deployment_cloudflare"></a> [enable\_green\_deployment\_cloudflare](#input\_enable\_green\_deployment\_cloudflare) | If set to true, enable green\_deployment | `bool` | `true` | no |

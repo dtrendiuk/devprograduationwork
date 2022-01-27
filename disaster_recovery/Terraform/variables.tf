@@ -16,7 +16,8 @@ variable "region" {
 }
 
 variable "deployment" {
-  default = "disaster-recovery"
+  description = "Type of deployment"
+  default     = "disaster-recovery"
 }
 
 # ALB variables

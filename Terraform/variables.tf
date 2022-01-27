@@ -16,7 +16,8 @@ variable "region" {
 }
 
 variable "deployment" {
-  default = ""
+  description = "Type of deployment"
+  default     = "default"
 }
 
 # ALB variables
