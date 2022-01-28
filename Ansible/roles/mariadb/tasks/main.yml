@@ -52,6 +52,9 @@
   notify:
     - Restart mariadb
 
+- name: Upload the first DB backup
+  ansible.builtin.shell: mysqldump -uroot -p{{ db_root_password }} -A > all-databases.sql && aws s3 cp all-databases.sql s3://dev-pro-test-database-backup
+
 - name: Create daily DB backup
   ansible.builtin.cron:
     name: "Make backup and move it to AWS bucket"

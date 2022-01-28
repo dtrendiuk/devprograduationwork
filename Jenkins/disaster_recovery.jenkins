@@ -83,7 +83,9 @@ pipeline {
           ssh -i ~/.ssh/ida_rsa -o StrictHostKeyChecking=no ec2-user@$(terraform output -json bastion_ip | jq -r) "
           sudo yum update -y && sudo yum install git -y && sudo pip3 install ansible;
           mkdir /home/ec2-user/ansible && git clone https://github.com/dtrendiuk/devprograduationwork.git /home/ec2-user/ansible/;
-          /home/ec2-user/ansible/disaster_recovery/Ansible/script.sh;
+          cd /home/ec2-user/ansible/disaster_recovery/Ansible;
+          ansible-galaxy collection install amazon.aws && pip3 install --user boto3;
+          ansible-playbook -i inventory_aws_ec2.yml playbook.yml --vault-password-file /home/ec2-user/vault_pass.txt
           rm -r /home/ec2-user/ansible && rm /home/ec2-user/vault_pass.txt
           "
         '''

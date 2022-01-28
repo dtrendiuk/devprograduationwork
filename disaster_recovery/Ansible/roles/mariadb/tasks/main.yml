@@ -52,5 +52,5 @@
   notify:
     - Restart mariadb
 
-- name: Upload and restore the last DB backup
+- name: Download and restore the last DB backup
   ansible.builtin.shell: aws s3 cp s3://dev-pro-test-database-backup/all-databases.sql /home/ec2-user/. && mysql -uroot -p{{ db_root_password }} < /home/ec2-user/all-databases.sql
