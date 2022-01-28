@@ -3,57 +3,33 @@ module "vpc" {
   source = ".//modules/vpc"
 }
 
-module "ec2-webserver-green" {
+module "ec2-webserver" {
   source = ".//modules/ec2"
-
-  name                            = "${var.env}-webserver-green"
+  # green/blue webservers
+  count                           = 2
+  name                            = "${var.env}-webserver-${count.index + 1}"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
-  subnet_id_instance              = module.vpc.private_subnet_ids[0]
+  subnet_id_instance              = element(module.vpc.private_subnet_ids[*], count.index)
   type                            = "webserver"
-  color                           = "green"
 }
 
-module "ec2-phpmyadmin-green" {
+module "ec2-phpmyadmin" {
   source = ".//modules/ec2"
-
-  name                            = "${var.env}-phpmyadmin-green"
+  # green/blue phpmyadmin servers
+  count                           = 2
+  name                            = "${var.env}-phpmyadmin-${count.index + 1}"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
   vpc_security_group_ids_instance = [module.vpc.sg_private_id]
-  subnet_id_instance              = module.vpc.private_subnet_ids[1]
+  subnet_id_instance              = element(module.vpc.private_subnet_ids[*], count.index)
   type                            = "phpmyadmin"
-  color                           = "green"
-}
-
-module "ec2-webserver-blue" {
-  source = ".//modules/ec2"
-
-  name                            = "${var.env}-webserver-blue"
-  iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
-  key_name                        = aws_key_pair.ansible_key.key_name
-  vpc_security_group_ids_instance = [module.vpc.sg_private_id]
-  subnet_id_instance              = module.vpc.private_subnet_ids[1]
-  type                            = "webserver"
-  color                           = "blue"
-}
-
-module "ec2-phpmyadmin-blue" {
-  source = ".//modules/ec2"
-
-  name                            = "${var.env}-phpmyadmin-blue"
-  iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
-  key_name                        = aws_key_pair.ansible_key.key_name
-  vpc_security_group_ids_instance = [module.vpc.sg_private_id]
-  subnet_id_instance              = module.vpc.private_subnet_ids[0]
-  type                            = "phpmyadmin"
-  color                           = "blue"
 }
 
 module "ec2-database" {
   source = ".//modules/ec2"
-
+  # database servrer
   name                            = "${var.env}-database"
   iam_instance_profile            = aws_iam_instance_profile.dev_pro_instance_profile.name
   key_name                        = aws_key_pair.ansible_key.key_name
@@ -62,16 +38,14 @@ module "ec2-database" {
   type                            = "database"
 
   depends_on = [
-    module.ec2-webserver-blue.instance,
-    module.ec2-webserver-green.instance,
-    module.ec2-phpmyadmin-blue.instance,
-    module.ec2-phpmyadmin-green.instance
+    module.ec2-webserver.instance,
+    module.ec2-phpmyadmin.instance
   ]
 }
 
 module "ec2-bastion" {
   source = ".//modules/ec2"
-
+  # bastion server
   name                            = "${var.env}-bastion"
   iam_instance_profile            = aws_iam_instance_profile.bastion_instance_profile.name
   key_name                        = aws_key_pair.dev_pro_key.key_name

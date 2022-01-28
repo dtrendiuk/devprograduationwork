@@ -67,13 +67,15 @@ resource "aws_alb_target_group" "dev_pro_tg_green_2" {
 }
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_green_1" {
+  count            = length(module.ec2-webserver[0].instance)
   target_group_arn = aws_alb_target_group.dev_pro_tg_green_1.arn
-  target_id        = module.ec2-webserver-green.instance[0]
+  target_id        = element(module.ec2-webserver[0].instance, count.index)
 }
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_green_2" {
+  count            = length(module.ec2-phpmyadmin[0].instance)
   target_group_arn = aws_alb_target_group.dev_pro_tg_green_2.arn
-  target_id        = module.ec2-phpmyadmin-green.instance[0]
+  target_id        = element(module.ec2-phpmyadmin[0].instance, count.index)
 }
 
 
@@ -146,11 +148,13 @@ resource "aws_alb_target_group" "dev_pro_tg_blue_2" {
 }
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_blue_1" {
+  count            = length(module.ec2-webserver[1].instance)
   target_group_arn = aws_alb_target_group.dev_pro_tg_blue_1.arn
-  target_id        = module.ec2-webserver-blue.instance[0]
+  target_id        = element(module.ec2-webserver[1].instance, count.index)
 }
 
 resource "aws_alb_target_group_attachment" "dev_pro_tg_blue_2" {
+  count            = length(module.ec2-phpmyadmin[1].instance)
   target_group_arn = aws_alb_target_group.dev_pro_tg_blue_2.arn
-  target_id        = module.ec2-phpmyadmin-blue.instance[0]
+  target_id        = element(module.ec2-phpmyadmin[1].instance, count.index)
 }
