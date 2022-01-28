@@ -19,10 +19,8 @@
 |------|--------|---------|
 | <a name="module_ec2-bastion"></a> [ec2-bastion](#module\_ec2-bastion) | .//modules/ec2 | n/a |
 | <a name="module_ec2-database"></a> [ec2-database](#module\_ec2-database) | .//modules/ec2 | n/a |
-| <a name="module_ec2-phpmyadmin-blue"></a> [ec2-phpmyadmin-blue](#module\_ec2-phpmyadmin-blue) | .//modules/ec2 | n/a |
-| <a name="module_ec2-phpmyadmin-green"></a> [ec2-phpmyadmin-green](#module\_ec2-phpmyadmin-green) | .//modules/ec2 | n/a |
-| <a name="module_ec2-webserver-blue"></a> [ec2-webserver-blue](#module\_ec2-webserver-blue) | .//modules/ec2 | n/a |
-| <a name="module_ec2-webserver-green"></a> [ec2-webserver-green](#module\_ec2-webserver-green) | .//modules/ec2 | n/a |
+| <a name="module_ec2-phpmyadmin"></a> [ec2-phpmyadmin](#module\_ec2-phpmyadmin) | .//modules/ec2 | n/a |
+| <a name="module_ec2-webserver"></a> [ec2-webserver](#module\_ec2-webserver) | .//modules/ec2 | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | .//modules/vpc | n/a |
 
 ## Resources
@@ -87,15 +85,7 @@
 | <a name="output_alb_dns_name_green"></a> [alb\_dns\_name\_green](#output\_alb\_dns\_name\_green) | ALB DNS Green |
 | <a name="output_bastion_ip"></a> [bastion\_ip](#output\_bastion\_ip) | Bastion Public IP |
 | <a name="output_database_private_ip"></a> [database\_private\_ip](#output\_database\_private\_ip) | Database server Private IP |
-| <a name="output_database_subnet_ids"></a> [database\_subnet\_ids](#output\_database\_subnet\_ids) | Database Subnet IDs |
 | <a name="output_nat_gateway_ip"></a> [nat\_gateway\_ip](#output\_nat\_gateway\_ip) | List of Elastic IPs created for AWS NAT Gateway |
-| <a name="output_phpmyadmin_blue_private_ip"></a> [phpmyadmin\_blue\_private\_ip](#output\_phpmyadmin\_blue\_private\_ip) | Blue phpMyAdmin server Private IP |
-| <a name="output_phpmyadmin_greeen_private_ip"></a> [phpmyadmin\_greeen\_private\_ip](#output\_phpmyadmin\_greeen\_private\_ip) | Green phpMyAdmin server Private IP |
-| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | Private Subnet IDs |
-| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | Public Subnet IDs |
-| <a name="output_sg_database_id"></a> [sg\_database\_id](#output\_sg\_database\_id) | Database Security Group |
-| <a name="output_sg_private_id"></a> [sg\_private\_id](#output\_sg\_private\_id) | Private Security Group |
-| <a name="output_sg_puplic_id"></a> [sg\_puplic\_id](#output\_sg\_puplic\_id) | Public Security Group |
+| <a name="output_phpmyadmin_private_ip"></a> [phpmyadmin\_private\_ip](#output\_phpmyadmin\_private\_ip) | phpMyAdmin servers Private IPs |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
-| <a name="output_webserver_blue_private_ip"></a> [webserver\_blue\_private\_ip](#output\_webserver\_blue\_private\_ip) | Blue Webserver Private IP |
-| <a name="output_webserver_green_private_ip"></a> [webserver\_green\_private\_ip](#output\_webserver\_green\_private\_ip) | Green Webserver Private IP |
+| <a name="output_webserver_private_ip"></a> [webserver\_private\_ip](#output\_webserver\_private\_ip) | Webserver Private IPs |

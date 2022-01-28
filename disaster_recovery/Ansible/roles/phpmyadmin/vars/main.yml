@@ -1,3 +1,3 @@
 ---
 # vars file for phpmyadmin
-database_IP: "{% for host in groups['_database'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% endfor %}"
+database_IP: "{% for host in groups['_database'] %}{{ hostvars[host]['private_ip_address'] }}{% endfor %}"
